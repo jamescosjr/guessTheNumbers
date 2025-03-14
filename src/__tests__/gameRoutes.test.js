@@ -29,7 +29,7 @@ describe("Game Routes", () => {
         const _id = resStart.body._id;
 
         const res = await request(app)
-            .post(`/games/${_id}/guess`)
+            .post(`/games/guess/${_id}`)
             .send({ guess: 50 });
     
         expect(res.statusCode).toBe(200);
@@ -50,7 +50,7 @@ describe("Game Routes", () => {
         const game = resStart.body;
     
         const res = await request(app)
-            .post(`/games/${game._id}/guess`)
+            .post(`/games/guess/${game._id}`)
             .send({ guess: "invalid" });
     
         expect(res.statusCode).toBe(400);
