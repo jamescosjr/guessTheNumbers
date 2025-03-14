@@ -12,16 +12,4 @@ const validateGuess = (req, res, next) => {
     next();
 };
 
-const levelSchema = Joi.object({
-    level: Joi.string().valid("1", "2", "3", "4", "5").required()
-});
-
-const validateLevel = (req, res, next) => {
-    const { error } = levelSchema.validate(req.body);
-    if (error) {
-        return res.status(400).json({ error: "O nível deve ser um valor entre 1 e 5." });
-    }
-    next();
-};
-
-module.exports = { validateGuess, validateLevel };
+module.exports = { validateGuess };
