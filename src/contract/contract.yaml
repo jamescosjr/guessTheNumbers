@@ -1,0 +1,124 @@
+openapi: 3.0.0
+info:
+  title: Guess The Numbers Game API
+  version: 1.0.0
+  description: API for starting a game, making guesses, and checking game status.
+paths:
+  /:
+    post:
+      summary: Start a new game
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                level:
+                  type: string
+                  example: "easy"
+      responses:
+        '201':
+          description: Game started successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Jogo iniciado!"
+                  _id:
+                    type: string
+                    example: "60d5f9b8f8d4b9a0a0f8b9a0"
+                  attempts:
+                    type: integer
+                    example: 10
+        '500':
+          description: Error starting the game
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Erro ao iniciar o jogo."
+  /guess/{_id}:
+    post:
+      summary: Make a guess
+      parameters:
+        - in: path
+          name: _id
+          required: true
+          schema:
+            type: string
+          example: "60d5f9b8f8d4b9a0a0f8b9a0"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                guess:
+                  type: integer
+                  example: 42
+      responses:
+        '200':
+          description: Guess processed successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Palpite correto!"
+                  remainingAttempts:
+                    type: integer
+                    example: 5
+        '500':
+          description: Error processing the guess
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Erro ao processar o palpite."
+  /{_id}:
+    get:
+      summary: Get game status
+      parameters:
+        - in: path
+          name: _id
+          required: true
+          schema:
+            type: string
+          example: "60d5f9b8f8d4b9a0a0f8b9a0"
+      responses:
+        '200':
+          description: Game status retrieved successfully
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  status:
+                    type: string
+                    example: "in progress"
+                  attempts:
+                    type: integer
+                    example: 5
+        '500':
+          description: Error retrieving game status
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  error:
+                    type: string
+                    example: "Erro ao buscar status do jogo."
