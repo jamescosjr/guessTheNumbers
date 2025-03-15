@@ -4,8 +4,10 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const router = require("./routes/gameRoutes");
 
+const allowedOrigins = process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(",") : [];
+
 const corsOptions = {
-    origin: process.env.FRONTEND_URL,
+    origin: allowedOrigins,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   };
