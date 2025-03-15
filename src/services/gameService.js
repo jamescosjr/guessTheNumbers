@@ -25,6 +25,8 @@ const makeGuess = async (_id, guess) => {
     game.remainingAttempts--;
 
     if (guess === game.secretNumber) {
+        game.remainingAttempts = 0;
+        await gameRepository.updateGame(game);
         return { message: "Parabéns! Você acertou!", success: true };
     }
 
