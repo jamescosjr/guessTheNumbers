@@ -1,11 +1,14 @@
 const gameRepository = require("../repositories/gameRepository");
 
 const startGame = async (level) => {
+    await gameRepository.deleteGamesWithMoreThan24Hours();
     const secretNumber = Math.floor(Math.random() * 100) + 1;
     const attemptsByLevel = { "1": 10, "2": 8, "3": 6, "4": 4, "5": 2 };
     const attempts = attemptsByLevel[level] || 6;
+    const createdAt = new Date();
+    
 
-    const game = { secretNumber, attempts, remainingAttempts: attempts };
+    const game = { secretNumber, attempts, remainingAttempts: attempts, createdAt };
     return await gameRepository.saveGame(game);
 };
 
@@ -22,7 +25,6 @@ const makeGuess = async (_id, guess) => {
     game.remainingAttempts--;
 
     if (guess === game.secretNumber) {
-        await gameRepository.deleteGame(_id);
         return { message: "Parabéns! Você acertou!", success: true };
     }
 
@@ -37,7 +39,7 @@ const makeGuess = async (_id, guess) => {
 const getGameStatus = async (_id) => {
     const game = await gameRepository.findGameById(_id);
     if (!game) {
-        return { remainingAttempts: remainingAttempts, status: "O jogo acabou!", attemptsUsed: attemptsUsed };
+        throw new Error("Jogo não encontrado");
     }
     const status = game.remainingAttempts <= 0 ? "Você perdeu! O número era " + game.secretNumber
         : "O jogo está em andamento.";

@@ -12,8 +12,21 @@ const gameSchema = new mongoose.Schema({
     remainingAttempts: {
         type: Number,
         required: true
-    }
-});
+    },
+    createdAt: {
+        type: Date,
+        required: true,
+        default: Date.now
+    },
+    updatedAt: {
+        type: Date,
+        required: false,
+        default: Date.now
+        }
+    }, 
+    {
+        timestamps: true
+    });   
 
 const Game = mongoose.model("Game", gameSchema);
 

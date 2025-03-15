@@ -4,7 +4,7 @@ const startGame = async (req, res) => {
     try {
         const { level } = req.body;
         const game = await gameService.startGame(level);
-        res.status(201).json({ message: "Jogo iniciado!", _id: game._id, attempts: game.attempts });
+        res.status(201).json({ message: "Jogo iniciado!", _id: game._id, attempts: game.attempts, createdAt: game.createdAt });
     } catch (error) {
         res.status(500).json({ error: "Erro ao iniciar o jogo." });
     }

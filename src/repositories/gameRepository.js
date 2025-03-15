@@ -9,6 +9,16 @@ const saveGame = async (gameData) => {
     }
 };
 
+const deleteGamesWithMoreThan24Hours = async () => {
+    try {
+        const date = new Date();
+        date.setDate(date.getDate() - 1);
+        return await Game.deleteMany({ createdAt: { $lt: date } });
+    } catch (error) {
+        throw error;
+    }
+}
+
 const findGameById = async (_id) => {
     try {
         return await Game.findById(_id);
@@ -19,6 +29,8 @@ const findGameById = async (_id) => {
 
 const updateGame = async (game) => {
     try {
+        await Game.updateOne({ _id: game._id }, { $set: { updatedAt: new Date() } });
+
         return await game.save();
     }
     catch (error) {
@@ -35,4 +47,4 @@ const deleteGame = async (_id) => {
     }
 };
 
-module.exports = { saveGame, findGameById, updateGame, deleteGame };
+module.exports = { saveGame, findGameById, updateGame, deleteGame, deleteGamesWithMoreThan24Hours };
