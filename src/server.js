@@ -4,10 +4,16 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const router = require("./routes/gameRoutes");
 
+const corsOptions = {
+    origin: "http://localhost:3000", // Specify the allowed origin
+    methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    credentials: true,
+  };
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(express.json());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use("/games", router);
 
 if (process.env.NODE_ENV !== "test") {

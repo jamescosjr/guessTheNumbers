@@ -1,4 +1,3 @@
-// const express = require("express");
 const Router = require("express").Router;
 const { startGame, makeGuess, getGameStatus } = require("../controllers/gameController");
 const { validateGuess } = require("../validations/gameValidations");
