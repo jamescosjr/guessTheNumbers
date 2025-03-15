@@ -42,7 +42,7 @@ describe("Game Routes", () => {
         const res = await request(app).get(`/games/${game._id}`).send();
 
         expect(res.statusCode).toBe(200);
-        expect(res.body).toHaveProperty("status");
+        expect(res.body).toEqual({ remainingAttempts: 10, status: "O jogo está em andamento.", attemptsUsed: 0 });
     });
 
     it("should return 400 for invalid guess", async () => {
@@ -63,5 +63,21 @@ describe("Game Routes", () => {
         expect(res.statusCode).toBe(500);
         expect(res.body).toHaveProperty("error");
     });
+
+    it("should start a new game with level 2, make a guess and check the status", async () => {
+        const resStart = await request(app).post("/games/").send({ level: 2 });
+        const game = resStart.body;
+    
+        const resGuess = await request(app)
+            .post(`/games/guess/${game._id}`)
+            .send({ guess: 50 });
+    
+        expect(resGuess.statusCode).toBe(200);
+    
+        const resStatus = await request(app).get(`/games/${game._id}`).send();
+    
+        expect(resStatus.statusCode).toBe(200);
+        expect(resStatus.body).toEqual({ remainingAttempts: 7, status: "O jogo está em andamento.", attemptsUsed: 1 });
+});
 });
 

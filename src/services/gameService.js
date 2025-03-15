@@ -15,11 +15,11 @@ const makeGuess = async (_id, guess) => {
         throw new Error("Jogo não encontrado");
     }
 
-    if (game.attempts <= 0) {
+    if (game.remainingAttempts <= 0) {
         throw new Error("Suas tentativas acabaram!");
     }
 
-    game.attempts--;
+    game.remainingAttempts--;
 
     if (guess === game.secretNumber) {
         await gameRepository.deleteGame(_id);
@@ -29,24 +29,22 @@ const makeGuess = async (_id, guess) => {
     await gameRepository.updateGame(game);
     return {
         message: guess < game.secretNumber ? "Muito baixo! Tente novamente." : "Muito alto! Tente novamente.",
-        remainingAttempts: game.attempts,
+        remainingAttempts: game.remainingAttempts,
         success: false
     };
 };
-
-const Game = require("../models/gameModel");
 
 const getGameStatus = async (_id) => {
     const game = await gameRepository.findGameById(_id);
     if (!game) {
         throw new Error("Jogo não encontrado");
     }
-    const status = game.attempts <= 0 ? "Você perdeu! O número era " + game.secretNumber
+    const status = game.remainingAttempts <= 0 ? "Você perdeu! O número era " + game.secretNumber
         : "O jogo está em andamento.";
 
-    return { remainingAttempts: game.remainingAttempts, status: status };
+    const attemptsUsed = game.attempts - game.remainingAttempts;
 
-
+    return { remainingAttempts: game.remainingAttempts, status: status, attemptsUsed: attemptsUsed };
 };
 
 module.exports = { startGame, makeGuess, getGameStatus };
