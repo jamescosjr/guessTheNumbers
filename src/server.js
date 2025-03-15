@@ -5,7 +5,7 @@ const cors = require("cors");
 const router = require("./routes/gameRoutes");
 
 const corsOptions = {
-    origin: "http://localhost:3000", // Specify the allowed origin
+    origin: process.env.FRONT_END_URL,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   };
