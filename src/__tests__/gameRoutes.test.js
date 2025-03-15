@@ -21,7 +21,7 @@ describe("Game Routes", () => {
         const res = await request(app).post("/games/").send({ level: 1 });
         expect(res.statusCode).toBe(201);
         expect(res.body).toEqual({
-             message: "Jogo iniciado!", 
+             message: "The game has began!", 
              _id: expect.any(String), 
              attempts: 10,
              createdAt: expect.any(String),
@@ -69,7 +69,7 @@ describe("Game Routes", () => {
         const res = await request(app).get(`/games/${game._id}`).send();
 
         expect(res.statusCode).toBe(200);
-        expect(res.body).toEqual({ remainingAttempts: 10, status: "O jogo está em andamento.", attemptsUsed: 0 });
+        expect(res.body).toEqual({ remainingAttempts: 10, status: "The game is in progress.", attemptsUsed: 0 });
     });
 
     it("should return 400 for invalid guess", async () => {
@@ -104,7 +104,7 @@ describe("Game Routes", () => {
         const resStatus = await request(app).get(`/games/${game._id}`).send();
     
         expect(resStatus.statusCode).toBe(200);
-        expect(resStatus.body).toEqual({ remainingAttempts: 7, status: "O jogo está em andamento.", attemptsUsed: 1 });
+        expect(resStatus.body).toEqual({ remainingAttempts: 7, status: "The game is in progress.", attemptsUsed: 1 });
 });
 });
 

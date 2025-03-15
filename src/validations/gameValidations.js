@@ -7,7 +7,7 @@ const guessSchema = Joi.object({
 const validateGuess = (req, res, next) => {
     const { error } = guessSchema.validate(req.body);
     if (error) {
-        return res.status(400).json({ error: "O palpite deve ser um número entre 1 e 100." });
+        return res.status(400).json({ error: "The guess should be between 1 and 100!" });
     }
     next();
 };
