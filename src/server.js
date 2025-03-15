@@ -5,7 +5,7 @@ const cors = require("cors");
 const router = require("./routes/gameRoutes");
 
 const corsOptions = {
-    origin: process.env.FRONT_END_URL,
+    origin: process.env.FRONTEND_URL,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
     credentials: true,
   };
